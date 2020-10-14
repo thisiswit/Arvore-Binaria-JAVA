@@ -1,0 +1,104 @@
+public class ArvoreBinaria {
+
+private class No {
+  int item;
+  No esq, dir;
+}
+
+  private No raiz;
+  private int contador;
+
+  public ArvoreBinaria() {
+   this.raiz = null;
+   this.contador = 0;
+  }
+
+  private No insere(int item, No p) {
+  if (p == null) {
+   p = new No();
+   p.item = item;
+   p.esq = p.dir = null;
+   this.contador++;
+  } else if (item < p.item) {
+    p.esq = insere(item, p.esq);
+  } else if (item > p.item) {
+    p.dir = insere(item, p.dir);
+  } else {
+    System.out.println("Erro : Registro ja existente");
+  }
+  return p;
+}
+
+  public void insere(int item) { 
+  this.raiz = this.insere(item, this.raiz);
+
+  }
+
+  public int numeroElementos() {
+  return this.contador;
+  }
+
+  public void imprime() {
+  this.central(this.raiz);
+  }
+
+  private void central(No p) {
+    if (p != null) {
+    central(p.esq);
+    System.out.println(p.item);
+    central(p.dir);
+  }
+}
+
+  private int pesquisa(int item, No p) {
+  if (p == null) {
+    return -1;
+  } // Registro não encontrado
+    else if (item < p.item) {
+      return pesquisa(item, p.esq);
+  } else if (item > p.item) {
+      return pesquisa(item, p.dir);
+  } else {
+      return p.item;
+  }
+}
+
+public int pesquisa(int item) {
+return this.pesquisa(item, this.raiz);
+}
+
+  private No antecessor(No q, No r) {
+      if (r.dir != null) {
+      r.dir = antecessor(q, r.dir);
+  } else {
+      q.item = r.item;
+      r = r.esq;
+  }
+     return r;
+  }
+
+  private No retira(int item, No p) {
+     if (p == null) {
+     System.out.println("Erro : Registro nao encontrado");
+  } else if (item < p.item) {
+      p.esq = retira(item, p.esq);
+  }   else if (item > p.item) {
+        p.dir = retira(item, p.dir);
+  } else {
+      contador--;
+      if (p.dir == null) {
+          p = p.esq;
+  } else if (p.esq == null) {
+      p = p.dir;
+  } else {
+      p.esq = antecessor(p, p.esq);
+  }
+}
+  return p;
+}
+
+  public void retira(int item) {
+    this.raiz = this.retira(item, this.raiz);
+  }
+
+}
